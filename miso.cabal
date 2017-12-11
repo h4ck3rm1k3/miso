@@ -172,9 +172,12 @@ executable svg
   else
     hs-source-dirs:
       examples/svg
+    other-modules:
+      Touch
     build-depends:
       base < 5,
       containers,
+      aeson,
       miso
     default-language:
       Haskell2010
