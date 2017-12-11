@@ -1,2 +1,7 @@
+# travis build for nix
+
 language: nix
-script: nix-build 
+script: nix-build
+
+
+# todo add stack build as well
