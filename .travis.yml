@@ -1,7 +1,59 @@
-# travis build for nix
-
-language: nix
-script: nix-build
-
-
+# travis build for stack
 # todo add stack build as well
+sudo: false
+
+# Caching so the next build will be fast too.
+cache:
+    directories:
+        - $HOME/.stack
+
+before_install:
+  # Download and unpack the stack executable
+  - mkdir -p ~/.local/bin
+  - export PATH=$HOME/.local/bin:$PATH
+  - travis_retry curl -L https://www.stackage.org/stack/linux-x86_64 | tar xz --wildcards --strip-components=1 -C ~/.local/bin '*/stack'
+
+# addons:
+#   apt:
+#     sources:
+#     - hvr-ghc
+#     packages:
+#     - ghc-7.10.2
+
+
+matrix:
+  include:
+  - env: GHCVER=7.8.4 STACK_YAML=stack.yaml
+    addons:
+      apt:
+        sources:
+        - hvr-ghc
+        packages:
+        - ghc-7.8.4
+  - env: GHCVER=7.10.1 STACK_YAML=stack-7.10.yaml
+    addons:
+      apt:
+        sources:
+        - hvr-ghc
+        packages:
+        - ghc-7.10.1
+  - env: GHCVER=head STACK_YAML=stack-head.yaml
+    addons:
+      apt:
+        sources:
+        - hvr-ghc
+        packages:
+        - ghc-head
+  allow_failures:
+    - env: GHCVER=head STACK_YAML=stack-head.yaml
+
+before_install:
+  # ghc
+  - export PATH=/opt/ghc/$GHCVER/bin:$PATH
+
+
+install:
+  - travis_wait stack --no-terminal --skip-ghc-check setup
+  - travis_wait stack --no-terminal --skip-ghc-check build
+  - travis_wait stack --no-terminal --skip-ghc-check install
+  - travis_wait stack --no-terminal --skip-ghc-check test --only-snapshot
