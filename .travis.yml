@@ -7,5 +7,6 @@ script: nix-build
 cache:
   directories:
     - /nix/
-before_cache: nix-collect-garbage -d
+    - $HOME/
+#before_cache: nix-collect-garbage -d
 # todo add stack build as well
