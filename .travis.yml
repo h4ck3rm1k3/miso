@@ -2,10 +2,10 @@
 
 language: nix
 script: nix-build
-install: travis_retry
+#install: travis_retry
 
 cache:
   directories:
-    - /nix/store
+    - /nix/
 before_cache: nix-collect-garbage -d
 # todo add stack build as well
