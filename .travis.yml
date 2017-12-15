@@ -1,5 +1,5 @@
 # travis build for nix
-
+sudo: required
 language: nix
 script: nix-build
 #install: travis_retry
