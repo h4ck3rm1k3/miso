@@ -10,3 +10,5 @@ cache:
     - $HOME/
 #before_cache: nix-collect-garbage -d
 # todo add stack build as well
+cache:
+    timeout: 9000
